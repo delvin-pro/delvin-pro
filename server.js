@@ -16,11 +16,14 @@ ffmpeg.setFfmpegPath(ffmpegStatic);
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
-let totalSize = 0;
-let downloadedSize = 0;
-let progressUpdateInterval;
+// Serve static files (if any) from the root directory
+app.use(express.static(path.join(__dirname)));
+
+// Serve the index.html file from the root directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/download', async (req, res) => {
     const videoUrl = req.body.url;
